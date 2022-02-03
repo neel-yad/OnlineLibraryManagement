@@ -2,6 +2,7 @@
 # Displaying Book
 # Adding Book
 # Lending Book
+from os import remove
 from django.forms import PasswordInput
 
 
@@ -54,6 +55,14 @@ class Library:
                     print(f"\nName:-{self.UserList[i]['Name']} \n Address:-{self.UserList[i]['Address']} \n Phone:-{self.UserList[i]['Phone']} \n")
                     break
                 print("Sorry for this book is not available..")
+    
+    def ReturnBook(self,book,name,phoneNumer):
+        self.List_of_Book.append(book)
+        self.LendBookList.remove(book)
+        for i in range(len(self.UserList)):
+            if self.UserList[i]['Book']==book and self.UserList[i]['Phone']==phoneNumer and self.UserList[i]['Name']==name:
+                self.UserList.pop(i)
+                break
 
     @property
     def ViewUserList(self):
@@ -61,7 +70,7 @@ class Library:
             print(f"{i+1}:-\n Book:-{self.UserList[i]['Book']} \n Name:-{self.UserList[i]['Name']} \n Address:-{self.UserList[i]['Address']} \n Phone:-{self.UserList[i]['Phone']} \n")
 
 
-def Libranian():
+def Libranian(NeelLibrarySanstan):
     print(" \n Please! select an operation")
     print("1:View List of Books")
     print("2:Add New Book")
@@ -83,10 +92,11 @@ def Libranian():
         print("Please! give a valid input.")
 
 
-def UserLogin():
+def UserLogin(NeelLibrarySanstan):
     print("Please! select an operation")
     print("1:View List of Books")
-    print("2:Borrower Book \n")
+    print("2:Borrower Book")
+    print("3:Return Book \n")
     print("Enter your choice:-",end=' ')
     UserInput = int(input())
     print()
@@ -97,6 +107,14 @@ def UserLogin():
         BookName = input()
         print()
         NeelLibrarySanstan.BorrowBook(BookName)
+    elif UserInput==3:
+        print("Enter book name:-",end=' ')
+        rBookName=input()
+        print("Enter your name:-",end=' ')
+        u_name=input()
+        print("Enter you phone No.")
+        phoneNo=int(input())
+        NeelLibrarySanstan.ReturnBook(rBookName,u_name,phoneNo)
 
 
 if __name__ == '__main__':
@@ -107,21 +125,20 @@ if __name__ == '__main__':
     while 1:
         print("1:Librarian")
         print("2:User \n")
-        print("Enter your choice:-",end=' ')
+        print("Enter your choice:-",end='')
         BaseInput = int(input())
-        print()
         if BaseInput == 1:
             print("Username:-", end=' ')
             Username = input()
             print("Password:-", end=' ')
             Password = input()
-            if Username == "neerjyadav21@gmail.com" and Password == "Tanni143":
+            if Username == "neerjyadav21@gmail.com" and Password == "Tanee":
                 while 1:
-                    Libranian()
-                    print("Continue/Logout",end=':-')
+                    Libranian(NeelLibrarySanstan)
+                    print("Do you want to logout Y/N",end=':-')
                     Logout=input()
                     print()
-                    if Logout=="Logout":
+                    if Logout=="Y":
                         break 
             else:
                 print("Incorrect Username or Password..")
@@ -129,11 +146,11 @@ if __name__ == '__main__':
         elif BaseInput == 2:
                 
                 while 1:
-                    UserLogin()
-                    print("Continue/Logout",end=':-')
+                    UserLogin(NeelLibrarySanstan)
+                    print("Do you want to Logout Y/N",end=':-')
                     Logout=input()
                     print()
-                    if Logout=="Logout":
+                    if Logout=="Y":
                         break
         else:
             print("Please! enter a valid input.. \n")
